@@ -15,7 +15,7 @@ fun CommonMiddleLabel(
 ) {
     Text(
         modifier = modifier,
-        fontSize = TextUnit(value = 32F, TextUnitType.Sp),
+        fontSize = TextUnit(value = 16F, TextUnitType.Sp),
         text = text,
     )
 }

@@ -4,9 +4,11 @@
 
     <!-- LABEL -->
     <string name="label_amount">数量：%,d</string>
+    <string name="label_placeholder_comment">コメント</string>
 
     <!-- BUTTON -->
     <string name="button_plus">+</string>
     <string name="button_minus">-</string>
+    <string name="button_submit">追加</string>
 
 </resources>
