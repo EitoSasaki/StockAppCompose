@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,23 +19,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import com.example.stockappcompose.Constants
 import com.example.stockappcompose.R
 import com.example.stockappcompose.Stock
-import com.example.stockappcompose.format
 import com.example.stockappcompose.ui.layout.common.CommonButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.common.CommonSingleButtonDialog
 import com.example.stockappcompose.ui.layout.common.CommonTextField
+import com.example.stockappcompose.ui.layout.common.CurrentTimer
 import com.example.stockappcompose.ui.layout.common.StockListRow
 import com.example.stockappcompose.ui.layout.common.StockListRowData
-import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 
 
@@ -90,7 +84,7 @@ fun StockListScreen() {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.common_space))
     ) {
         AmountInputRow(
             amount = amount,
@@ -120,7 +114,7 @@ private fun AmountInputRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp),
+            .height(dimensionResource(id = R.dimen.common_row_height)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CommonMiddleLabel(
@@ -138,7 +132,7 @@ private fun AmountInputRow(
             modifier = Modifier
                 .fillMaxHeight()
                 .background(Color.Transparent)
-                .width(8.dp)
+                .width(dimensionResource(id = R.dimen.common_space))
         )
         CommonButton(
             modifier = Modifier.weight(1F),
@@ -164,7 +158,7 @@ private fun CommentInputRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp),
+            .height(dimensionResource(id = R.dimen.common_row_height)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CurrentTimer(
@@ -180,7 +174,7 @@ private fun CommentInputRow(
             modifier = Modifier
                 .fillMaxHeight()
                 .background(Color.Transparent)
-                .width(8.dp)
+                .width(dimensionResource(id = R.dimen.common_space))
         )
         CommonButton(
             modifier = Modifier.weight(1F),
@@ -197,44 +191,6 @@ private fun CommentInputRow(
 @Composable
 private fun CommentInputRowPreview() {
     CommentInputRow {}
-}
-
-@Composable
-private fun CurrentTimer(
-    modifier: Modifier = Modifier,
-) {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    var canRunTimer by remember { mutableStateOf(false) }
-    var currentTime: LocalDateTime by remember { mutableStateOf(LocalDateTime.now()) }
-
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_START) {
-                canRunTimer = true
-            } else if (event == Lifecycle.Event.ON_STOP) {
-                canRunTimer = false
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
-
-    LaunchedEffect(canRunTimer) {
-        if (canRunTimer) {
-            while (true) {
-                currentTime = LocalDateTime.now()
-                println(currentTime)
-                delay(1000L)
-            }
-        }
-    }
-
-    CommonMiddleLabel(
-        modifier = modifier,
-        text = currentTime.format(Constants.DATETIME_FORMAT_HHMMSS),
-    )
 }
 
 @Composable
@@ -271,7 +227,7 @@ private fun BottomButtonRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp),
+            .height(dimensionResource(id = R.dimen.common_row_height)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CommonButton(
@@ -283,7 +239,7 @@ private fun BottomButtonRow(
             modifier = Modifier
                 .fillMaxHeight()
                 .background(Color.Transparent)
-                .width(8.dp)
+                .width(dimensionResource(id = R.dimen.common_space))
         )
         CommonButton(
             modifier = Modifier.weight(4F),

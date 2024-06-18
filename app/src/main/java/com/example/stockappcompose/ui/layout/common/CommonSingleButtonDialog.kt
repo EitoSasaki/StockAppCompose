@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.stockappcompose.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,14 +30,14 @@ fun CommonSingleButtonDialog(
             Column(
                 modifier = Modifier
                     .background(Color.White)
-                    .padding(8.dp),
+                    .padding(dimensionResource(id = R.dimen.common_space)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 CommonMiddleLabel(text = message)
                 Spacer(
                     modifier = Modifier
                         .background(Color.Transparent)
-                        .height(8.dp)
+                        .height(dimensionResource(id = R.dimen.common_space))
                 )
                 CommonButton(btnText = btnText, onClick = onClickButton)
             }

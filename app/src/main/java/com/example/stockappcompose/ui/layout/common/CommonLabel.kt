@@ -30,7 +30,7 @@ fun CommonSmallLabel(
 ) {
     Text(
         modifier = modifier,
-        fontSize = TextUnit(value = 16F, TextUnitType.Sp),
+        fontSize = TextUnit(value = 12F, TextUnitType.Sp),
         text = text,
         maxLines = maxLines,
     )

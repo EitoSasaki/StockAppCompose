@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stockappcompose.Constants
@@ -42,8 +43,8 @@ fun StockListRow(
         modifier = Modifier
             .background(backgroundColor)
             .fillMaxWidth()
-            .height(64.dp)
-            .padding(horizontal = 8.dp),
+            .height(dimensionResource(id = R.dimen.common_row_height))
+            .padding(horizontal = dimensionResource(id = R.dimen.common_space)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(checked = data.isChecked, onCheckedChange = onCheckedChange)
@@ -63,10 +64,10 @@ fun StockListRow(
             modifier = Modifier
                 .fillMaxHeight()
                 .background(Color.Transparent)
-                .width(8.dp)
+                .width(dimensionResource(id = R.dimen.common_space))
         )
         CommonButton(
-            modifier = Modifier.width(84.dp),
+            modifier = Modifier.width(dimensionResource(id = R.dimen.button_min_width)),
             btnText = R.string.button_delete,
             onClick = onClickDelete
         )
