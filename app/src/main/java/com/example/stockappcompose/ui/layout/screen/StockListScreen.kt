@@ -33,6 +33,7 @@ import com.example.stockappcompose.Stock
 import com.example.stockappcompose.format
 import com.example.stockappcompose.ui.layout.common.CommonButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
+import com.example.stockappcompose.ui.layout.common.CommonSingleButtonDialog
 import com.example.stockappcompose.ui.layout.common.CommonTextField
 import com.example.stockappcompose.ui.layout.common.StockListRow
 import com.example.stockappcompose.ui.layout.common.StockListRowData
@@ -44,6 +45,7 @@ import java.time.LocalDateTime
 fun StockListScreen() {
     var list: List<StockListRowData> by remember { mutableStateOf(emptyList()) }
     var amount: Int by remember { mutableStateOf(0) }
+    var canShowSumDialog: Boolean by remember { mutableStateOf(false) }
     val onChangeAmount: (Int) -> Unit = {
         if (it <= Constants.STOCK_AMOUNT_MAX && it >= Constants.STOCK_AMOUNT_MIN) {
             amount = it
@@ -71,7 +73,17 @@ fun StockListScreen() {
         }
     }
     val onClickSum: () -> Unit = {
-        // TODO: ダイアログ表示
+        canShowSumDialog = true
+    }
+
+    if (canShowSumDialog) {
+        val sum = list.filter { it.isChecked }.sumOf { it.stock.amount }
+        CommonSingleButtonDialog(
+            message = stringResource(id = R.string.message_sum, sum),
+            btnText = R.string.button_ok,
+            onClickButton = { canShowSumDialog = false },
+            onDismiss = { canShowSumDialog = false },
+        )
     }
 
     Column(
