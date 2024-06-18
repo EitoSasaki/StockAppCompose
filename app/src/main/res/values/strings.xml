@@ -11,5 +11,7 @@
     <string name="button_minus">-</string>
     <string name="button_submit">追加</string>
     <string name="button_delete">削除</string>
+    <string name="button_clear">クリア</string>
+    <string name="button_sum">選択された合計数量</string>
 
 </resources>

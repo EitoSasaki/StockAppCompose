@@ -1,11 +1,14 @@
 package com.example.stockappcompose.ui.layout.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -17,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,11 +65,20 @@ fun StockListScreen() {
             it.removeAt(index)
         }
     }
+    val onClickClear: () -> Unit = {
+        list = list.toMutableList().also {
+            it.clear()
+        }
+    }
+    val onClickSum: () -> Unit = {
+        // TODO: ダイアログ表示
+    }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .padding(horizontal = 8.dp)
     ) {
         AmountInputRow(
             amount = amount,
@@ -80,6 +93,10 @@ fun StockListScreen() {
             onChangeChecked = onChangeChecked,
             onClickDelete = onClickDelete,
         )
+        BottomButtonRow(
+            onClickClear = onClickClear,
+            onClickSum = onClickSum,
+        )
     }
 }
 
@@ -91,8 +108,7 @@ private fun AmountInputRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp)
-            .padding(horizontal = 8.dp),
+            .height(64.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CommonMiddleLabel(
@@ -105,6 +121,12 @@ private fun AmountInputRow(
             onClick = {
                 onChangeAmount(amount + 1)
             }
+        )
+        Spacer(
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(Color.Transparent)
+                .width(8.dp)
         )
         CommonButton(
             modifier = Modifier.weight(1F),
@@ -130,8 +152,7 @@ private fun CommentInputRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(64.dp)
-            .padding(horizontal = 8.dp),
+            .height(64.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CurrentTimer(
@@ -142,6 +163,12 @@ private fun CommentInputRow(
             value = comment,
             placeholder = R.string.label_placeholder_comment,
             onValueChange = { comment = it }
+        )
+        Spacer(
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(Color.Transparent)
+                .width(8.dp)
         )
         CommonButton(
             modifier = Modifier.weight(1F),
@@ -208,7 +235,6 @@ private fun StockListColumn(
     LazyColumn(
         modifier = modifier
         .fillMaxWidth()
-        .padding(8.dp)
     ) {
         itemsIndexed(list) { index, rowData ->
             StockListRow(
@@ -225,3 +251,38 @@ private fun StockListColumn(
     }
 }
 
+@Composable
+private fun BottomButtonRow(
+    onClickClear: () -> Unit,
+    onClickSum: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        CommonButton(
+            modifier = Modifier.weight(2F),
+            btnText = R.string.button_clear,
+            onClick = onClickClear
+        )
+        Spacer(
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(Color.Transparent)
+                .width(8.dp)
+        )
+        CommonButton(
+            modifier = Modifier.weight(4F),
+            btnText = R.string.button_sum,
+            onClick = onClickSum
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun BottomButtonRowPreview() {
+    BottomButtonRow({}, {})
+}

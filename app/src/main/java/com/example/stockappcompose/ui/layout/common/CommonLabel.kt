@@ -12,11 +12,13 @@ import androidx.compose.ui.unit.TextUnitType
 fun CommonMiddleLabel(
     modifier: Modifier = Modifier,
     text: String,
+    maxLines: Int = 1,
 ) {
     Text(
         modifier = modifier,
         fontSize = TextUnit(value = 16F, TextUnitType.Sp),
         text = text,
+        maxLines = maxLines,
     )
 }
 
@@ -24,11 +26,13 @@ fun CommonMiddleLabel(
 fun CommonSmallLabel(
     modifier: Modifier = Modifier,
     text: String,
+    maxLines: Int = 1,
 ) {
     Text(
         modifier = modifier,
         fontSize = TextUnit(value = 16F, TextUnitType.Sp),
         text = text,
+        maxLines = maxLines,
     )
 }
 
