@@ -1,6 +1,7 @@
 package com.example.stockappcompose.ui.layout.common
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.stockappcompose.Constants
 import com.example.stockappcompose.R
 import com.example.stockappcompose.Stock
@@ -31,6 +31,7 @@ data class StockListRowData(
 fun StockListRow(
     index: Int,
     data: StockListRowData,
+    onClickRow: () -> Unit,
     onCheckedChange: (Boolean) -> Unit,
     onClickDelete: () -> Unit,
 ) {
@@ -44,7 +45,8 @@ fun StockListRow(
             .background(backgroundColor)
             .fillMaxWidth()
             .height(dimensionResource(id = R.dimen.common_row_height))
-            .padding(horizontal = dimensionResource(id = R.dimen.common_space)),
+            .padding(horizontal = dimensionResource(id = R.dimen.common_space))
+            .clickable(onClick = onClickRow),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(checked = data.isChecked, onCheckedChange = onCheckedChange)
@@ -58,7 +60,7 @@ fun StockListRow(
         )
         CommonSmallLabel(
             modifier = Modifier.weight(3F),
-            text = data.stock.comment
+            text = data.stock.comment.orEmpty()
         )
         Spacer(
             modifier = Modifier
@@ -78,5 +80,5 @@ fun StockListRow(
 @Composable
 private fun StockListRowPreview() {
     val rowData = StockListRowData(isChecked = false, Stock("コメント", 9999, LocalDateTime.now()))
-    StockListRow(1, rowData, {}, {})
+    StockListRow(1, rowData, {}, {}, {})
 }

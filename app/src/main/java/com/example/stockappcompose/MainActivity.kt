@@ -19,13 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             StockAppComposeTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
-                    Column( modifier = Modifier.padding(innerPadding)) {
-                        StockApp()
-                    }
-                }
+                StockApp()
             }
         }
     }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,9 +23,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.stockappcompose.Constants
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockappcompose.R
-import com.example.stockappcompose.Stock
+import com.example.stockappcompose.Route
 import com.example.stockappcompose.ui.layout.common.CommonButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.common.CommonSingleButtonDialog
@@ -32,38 +33,20 @@ import com.example.stockappcompose.ui.layout.common.CommonTextField
 import com.example.stockappcompose.ui.layout.common.CurrentTimer
 import com.example.stockappcompose.ui.layout.common.StockListRow
 import com.example.stockappcompose.ui.layout.common.StockListRowData
-import java.time.LocalDateTime
-
+import com.example.stockappcompose.viewmodel.StockListViewModel
 
 @Composable
-fun StockListScreen() {
-    var list: List<StockListRowData> by remember { mutableStateOf(emptyList()) }
-    var amount: Int by remember { mutableStateOf(0) }
+fun StockListScreen(
+    stockListViewModel: StockListViewModel = viewModel(),
+    onNavigateToScreen: (Route) -> Unit
+) {
+    val list = stockListViewModel.list.collectAsState().value
+    val amount = stockListViewModel.amount.collectAsState().value
     var canShowSumDialog: Boolean by remember { mutableStateOf(false) }
-    val onChangeAmount: (Int) -> Unit = {
-        if (it <= Constants.STOCK_AMOUNT_MAX && it >= Constants.STOCK_AMOUNT_MIN) {
-            amount = it
-        }
-    }
-    val onClickSubmit: (String) -> Unit = { comment ->
-        list = list.toMutableList().also {
-            val newValue = Stock(comment = comment, amount = amount, createDate = LocalDateTime.now())
-            it.add(StockListRowData(isChecked = false, stock = newValue))
-        }
-    }
-    val onChangeChecked: (Int, Boolean) -> Unit = { index, isChecked ->
-        list = list.toMutableList().also {
-            it[index] = it[index].copy(isChecked = isChecked)
-        }
-    }
-    val onClickDelete: (Int) -> Unit = { index ->
-        list = list.toMutableList().also {
-            it.removeAt(index)
-        }
-    }
-    val onClickClear: () -> Unit = {
-        list = list.toMutableList().also {
-            it.clear()
+
+    val onClickRow: (Int) -> Unit = { index ->
+        list.getOrNull(index)?.let {
+            onNavigateToScreen(Route.StockDetail(it.stock))
         }
     }
     val onClickSum: () -> Unit = {
@@ -88,19 +71,20 @@ fun StockListScreen() {
     ) {
         AmountInputRow(
             amount = amount,
-            onChangeAmount = onChangeAmount,
+            onChangeAmount = { stockListViewModel.onChangeAmount(it) },
         )
         CommentInputRow(
-            onClickSubmit = onClickSubmit,
+            onClickSubmit = { stockListViewModel.onClickSubmit(it) },
         )
         StockListColumn(
             modifier = Modifier.weight(1F),
             list = list,
-            onChangeChecked = onChangeChecked,
-            onClickDelete = onClickDelete,
+            onClickRow = onClickRow,
+            onChangeChecked = { index, isChecked -> stockListViewModel.onChangeChecked(index, isChecked) },
+            onClickDelete = { stockListViewModel.onClickDelete(it) },
         )
         BottomButtonRow(
-            onClickClear = onClickClear,
+            onClickClear = { stockListViewModel.onClickClear() },
             onClickSum = onClickSum,
         )
     }
@@ -197,6 +181,7 @@ private fun CommentInputRowPreview() {
 private fun StockListColumn(
     modifier: Modifier = Modifier,
     list: List<StockListRowData>,
+    onClickRow: (Int) -> Unit,
     onChangeChecked: (Int, Boolean) -> Unit,
     onClickDelete: (Int) -> Unit,
 ) {
@@ -208,6 +193,9 @@ private fun StockListColumn(
             StockListRow(
                 index = index,
                 data = rowData,
+                onClickRow = {
+                    onClickRow(index)
+                },
                 onCheckedChange = {
                     onChangeChecked(index, it)
                 },
