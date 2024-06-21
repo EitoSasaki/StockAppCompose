@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -20,7 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.stockappcompose.ui.layout.common.BackButton
+import com.example.stockappcompose.ui.layout.common.CommonImageButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.screen.StockDetailScreen
 import com.example.stockappcompose.ui.layout.screen.StockListScreen
@@ -77,7 +79,10 @@ private fun AppTopBar(
         },
         navigationIcon = {
             if (hasBackStack) {
-                BackButton(onClick = onClickBackButton)
+                CommonImageButton(
+                    image = Icons.Default.ArrowBack,
+                    onClick = onClickBackButton
+                )
             }
         },
     )
