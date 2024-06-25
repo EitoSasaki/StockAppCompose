@@ -55,10 +55,10 @@ class StockListViewModel : ViewModel() {
     }
 
     // TODO: データベース実装時に詳細画面に移設予定
-    fun saveImageUri(index: Int, imageUri: Uri) {
+    fun changeImageUri(index: Int, imageUri: Uri?) {
         _list.value = _list.value.toMutableList().also { list ->
             list.getOrNull(index)?.let { row ->
-                val stock = row.stock.copy(imageUri = imageUri.path)
+                val stock = row.stock.copy(imageUri = imageUri?.path)
                 list[index] = row.copy(stock = stock)
             }
         }

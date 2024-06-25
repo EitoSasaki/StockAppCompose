@@ -58,11 +58,14 @@ fun StockDetailScreen(
             onClickOpenImage = { canOpenImagePicker = true },
             onClickSaveImage = {
                 stockDetailViewModel.selectedImage.value?.let {
-                    stockListViewModel.saveImageUri(stockDetailViewModel.index.value, it)
+                    stockListViewModel.changeImageUri(stockDetailViewModel.index.value, it)
                     onPopToScreen(null)
                 }
             },
-            onClickDeleteImage = {},
+            onClickDeleteImage = {
+                stockDetailViewModel.onClickDeleteImage()
+                stockListViewModel.changeImageUri(stockDetailViewModel.index.value, null)
+            },
         )
         StockDataColumn(stock)
     }

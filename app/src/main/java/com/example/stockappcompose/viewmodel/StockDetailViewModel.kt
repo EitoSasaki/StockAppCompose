@@ -25,4 +25,8 @@ class StockDetailViewModel(index: Int, stock: Stock) : ViewModel() {
     fun onSelectImage(uri: Uri?) {
         _selectedImage.value = uri
     }
+
+    fun onClickDeleteImage() {
+        _selectedImage.value = null
+    }
 }
