@@ -35,8 +35,10 @@ class StockListViewModel : ViewModel() {
     }
 
     fun onChangeChecked(index: Int, isChecked: Boolean) {
-        _list.value = _list.value.toMutableList().also {
-            it[index] = it[index].copy(isChecked = isChecked)
+        _list.value = _list.value.toMutableList().also { list ->
+            list.getOrNull(index)?.let { row ->
+                list[index] = row.copy(isChecked = isChecked)
+            }
         }
     }
 
@@ -54,9 +56,11 @@ class StockListViewModel : ViewModel() {
 
     // TODO: データベース実装時に詳細画面に移設予定
     fun saveImageUri(index: Int, imageUri: Uri) {
-        _list.value = _list.value.toMutableList().also {
-            val stock = it[index].stock.copy(imageUri = imageUri.path)
-            it[index] = it[index].copy(stock = stock)
+        _list.value = _list.value.toMutableList().also { list ->
+            list.getOrNull(index)?.let { row ->
+                val stock = row.stock.copy(imageUri = imageUri.path)
+                list[index] = row.copy(stock = stock)
+            }
         }
     }
 }
