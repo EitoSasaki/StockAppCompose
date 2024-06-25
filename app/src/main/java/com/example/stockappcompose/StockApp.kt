@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -39,6 +40,13 @@ fun StockApp() {
     val onNavigateToScreen: (Route) -> Unit = { route ->
         navController.navigate(route.value)
     }
+    val onPopToScreen: (Route?) -> Unit = { route ->
+        if (route == null) {
+            navController.popBackStack()
+        } else {
+            navController.popBackStack(route.value, inclusive = false)
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -60,6 +68,7 @@ fun StockApp() {
                 StockAppNavHost(
                     navController = navController,
                     onNavigateToScreen = onNavigateToScreen,
+                    onPopToScreen = onPopToScreen,
                 )
             }
         }
@@ -92,14 +101,22 @@ private fun AppTopBar(
 private fun StockAppNavHost(
     navController: NavHostController,
     onNavigateToScreen: (Route) -> Unit,
+    onPopToScreen: (Route?) -> Unit,
 ) {
+    val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current) {
+        "No ViewModelStoreOwner was provided via LocalViewModelStoreOwner"
+    }
     NavHost(navController = navController, startDestination = "StockList") {
         composable(route = "StockList") {
-            StockListScreen(onNavigateToScreen = onNavigateToScreen)
+            StockListScreen(
+                stockListViewModel = viewModel(viewModelStoreOwner),
+                onNavigateToScreen = onNavigateToScreen
+            )
         }
         composable(
-            route = "StockDetail/{amount}/?comment={comment}/{createDate}/?imageUri={imageUri}",
+            route = "StockDetail/{index}//{amount}/?comment={comment}/{createDate}/?imageUri={imageUri}",
             arguments = listOf(
+                navArgument("index") { type = NavType.IntType },
                 navArgument("amount") { type = NavType.IntType },
                 navArgument("comment") {
                     type = NavType.StringType
@@ -112,20 +129,23 @@ private fun StockAppNavHost(
                 }
             ),
         ) { backStackEntry ->
+            val index = backStackEntry.arguments?.getInt("index")
             val amount = backStackEntry.arguments?.getInt("amount")
             val comment = backStackEntry.arguments?.getString("comment")
             val createDateString = backStackEntry.arguments?.getString("createDate")
             val imageUri = backStackEntry.arguments?.getString("imageUri")
-            if (amount != null && createDateString != null) {
+            if (index != null && amount != null && createDateString != null) {
                 val stock = Stock(comment, amount, createDateString.toLocalDateTime(Constants.DATETIME_FORMAT_YYYYMMDDHHMMSSSSS), imageUri)
                 StockDetailScreen(
                     stockDetailViewModel = viewModel(
                         factory = viewModelFactory {
                             initializer {
-                                StockDetailViewModel(stock)
+                                StockDetailViewModel(index, stock)
                             }
                         }
-                    )
+                    ),
+                    stockListViewModel = viewModel(viewModelStoreOwner),
+                    onPopToScreen = onPopToScreen,
                 )
             }
         }

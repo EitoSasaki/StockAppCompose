@@ -23,16 +23,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockappcompose.Constants
 import com.example.stockappcompose.R
+import com.example.stockappcompose.Route
 import com.example.stockappcompose.Stock
 import com.example.stockappcompose.format
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.common.CommonImageButton
 import com.example.stockappcompose.ui.layout.common.ImagePicker
 import com.example.stockappcompose.viewmodel.StockDetailViewModel
+import com.example.stockappcompose.viewmodel.StockListViewModel
 
 @Composable
 fun StockDetailScreen(
-    stockDetailViewModel: StockDetailViewModel = viewModel()
+    stockDetailViewModel: StockDetailViewModel = viewModel(),
+    stockListViewModel: StockListViewModel = viewModel(),
+    onPopToScreen: (Route?) -> Unit,
 ) {
     val stock = stockDetailViewModel.stock.collectAsState().value
     var canOpenImagePicker: Boolean by remember { mutableStateOf(false) }
@@ -52,7 +56,12 @@ fun StockDetailScreen(
     ) {
         ButtonsRow(
             onClickOpenImage = { canOpenImagePicker = true },
-            onClickSaveImage = {},
+            onClickSaveImage = {
+                stockDetailViewModel.selectedImage.value?.let {
+                    stockListViewModel.saveImageUri(stockDetailViewModel.index.value, it)
+                    onPopToScreen(null)
+                }
+            },
             onClickDeleteImage = {},
         )
         StockDataColumn(stock)

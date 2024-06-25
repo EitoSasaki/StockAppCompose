@@ -1,5 +1,6 @@
 package com.example.stockappcompose.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.stockappcompose.Constants
 import com.example.stockappcompose.Stock
@@ -48,6 +49,14 @@ class StockListViewModel : ViewModel() {
     fun onClickClear() {
         _list.value = _list.value.toMutableList().also {
             it.clear()
+        }
+    }
+
+    // TODO: データベース実装時に詳細画面に移設予定
+    fun saveImageUri(index: Int, imageUri: Uri) {
+        _list.value = _list.value.toMutableList().also {
+            val stock = it[index].stock.copy(imageUri = imageUri.path)
+            it[index] = it[index].copy(stock = stock)
         }
     }
 }
