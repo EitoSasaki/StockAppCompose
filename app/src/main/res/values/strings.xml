@@ -1,0 +1,25 @@
+<resources>
+    <!-- COMMON -->
+    <string name="app_name">StockAppCompose</string>
+
+
+    <!-- MESSAGE -->
+    <string name="message_sum">合計%dです。</string>
+
+    <!-- LABEL -->
+    <string name="label_amount">数量：%,d</string>
+    <string name="label_create_date">登録時刻：%s</string>
+    <string name="label_comment">コメント：%s</string>
+    <string name="label_placeholder_comment">コメント</string>
+
+    <!-- BUTTON -->
+    <string name="button_plus">+</string>
+    <string name="button_minus">-</string>
+    <string name="button_submit">追加</string>
+    <string name="button_delete">削除</string>
+    <string name="button_clear">クリア</string>
+    <string name="button_sum">選択された合計数量</string>
+    <string name="button_ok">OK</string>
+    <string name="button_back">＜</string>
+
+</resources>

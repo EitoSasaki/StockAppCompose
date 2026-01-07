@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_space">8dp</dimen>
+    <dimen name="common_row_height">64dp</dimen>
+    <dimen name="button_min_width">84dp</dimen>
+</resources>
