@@ -2,23 +2,40 @@ package com.example.stockappcompose.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.stockappcompose.Constants
 import com.example.stockappcompose.Stock
+import com.example.stockappcompose.repository.StockRepository
 import com.example.stockappcompose.ui.layout.common.StockListRowData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class StockListViewModel @Inject constructor() : ViewModel() {
+class StockListViewModel @Inject constructor(
+    private val stockRepository: StockRepository
+) : ViewModel() {
 
     private val _list = MutableStateFlow<List<StockListRowData>>(emptyList())
     private val _amount = MutableStateFlow(0)
 
     val list: StateFlow<List<StockListRowData>> = _list
     val amount: StateFlow<Int> = _amount
+
+    // 初期表示
+    fun initView() {
+        viewModelScope.launch {
+            stockRepository.getStocks().take(1).collect { stocks ->
+                _list.value = stocks.map { stock ->
+                    StockListRowData(isChecked = false, stock = stock)
+                }
+            }
+        }
+    }
     
     fun onChangeAmount(newValue: Int) {
         if (newValue <= Constants.STOCK_AMOUNT_MAX && newValue >= Constants.STOCK_AMOUNT_MIN) {
