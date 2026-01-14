@@ -47,7 +47,7 @@ fun StockListScreen(
 
     val onClickRow: (Int) -> Unit = { index ->
         list.getOrNull(index)?.let {
-            onNavigateToScreen(Route.StockDetail(index, it.stock))
+            onNavigateToScreen(Route.StockDetail(it.stock.id))
         }
     }
     val onClickSum: () -> Unit = {

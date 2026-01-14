@@ -18,7 +18,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.stockappcompose.Constants
 import com.example.stockappcompose.R
-import com.example.stockappcompose.Stock
+import com.example.stockappcompose.data.db.Stock
 import com.example.stockappcompose.format
 import java.time.LocalDateTime
 
@@ -79,6 +79,6 @@ fun StockListRow(
 @Preview
 @Composable
 private fun StockListRowPreview() {
-    val rowData = StockListRowData(isChecked = false, Stock("コメント", 9999, LocalDateTime.now()))
+    val rowData = StockListRowData(isChecked = false, Stock(0, "コメント", 9999, null, LocalDateTime.now()))
     StockListRow(1, rowData, {}, {}, {})
 }

@@ -112,38 +112,17 @@ private fun StockAppNavHost(
             )
         }
         composable(
-            route = "StockDetail/{index}//{amount}/?comment={comment}/{createDate}/?imageUri={imageUri}",
+            route = "StockDetail/{id}",
             arguments = listOf(
-                navArgument("index") { type = NavType.IntType },
-                navArgument("amount") { type = NavType.IntType },
-                navArgument("comment") {
-                    type = NavType.StringType
-                    nullable = true
-                },
-                navArgument("createDate") { type = NavType.StringType },
-                navArgument("imageUri") {
-                    type = NavType.StringType
-                    nullable = true
-                }
+                navArgument("id") { type = NavType.IntType },
             ),
         ) { backStackEntry ->
-            val index = backStackEntry.arguments?.getInt("index")
-            val amount = backStackEntry.arguments?.getInt("amount")
-            val comment = backStackEntry.arguments?.getString("comment")
-            val createDateString = backStackEntry.arguments?.getString("createDate")
-            val imageUri = backStackEntry.arguments?.getString("imageUri")
-            if (index != null && amount != null && createDateString != null) {
-                val stock = Stock(
-                    comment,
-                    amount,
-                    createDateString.toLocalDateTime(Constants.DATETIME_FORMAT_YYYYMMDDHHMMSSSSS),
-                    imageUri
-                )
+            val id = backStackEntry.arguments?.getInt("id")
+            if (id != null) {
                 val viewModel = viewModel<StockDetailViewModel>()
-                viewModel.setStock(index, stock)
+                viewModel.setId(id)
                 StockDetailScreen(
                     stockDetailViewModel = viewModel,
-                    stockListViewModel = viewModel(viewModelStoreOwner),
                     onPopToScreen = onPopToScreen,
                 )
             }

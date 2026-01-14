@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,22 +25,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockappcompose.Constants
 import com.example.stockappcompose.R
 import com.example.stockappcompose.Route
-import com.example.stockappcompose.Stock
+import com.example.stockappcompose.data.db.Stock
 import com.example.stockappcompose.format
-import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.common.CommonImageButton
+import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.common.ImagePicker
 import com.example.stockappcompose.viewmodel.StockDetailViewModel
-import com.example.stockappcompose.viewmodel.StockListViewModel
 
 @Composable
 fun StockDetailScreen(
     stockDetailViewModel: StockDetailViewModel = viewModel(),
-    stockListViewModel: StockListViewModel = viewModel(),
     onPopToScreen: (Route?) -> Unit,
 ) {
     val stock = stockDetailViewModel.stock.collectAsState().value
     var canOpenImagePicker: Boolean by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        stockDetailViewModel.initView()
+    }
 
     if (canOpenImagePicker) {
         ImagePicker { uri ->
@@ -57,14 +60,12 @@ fun StockDetailScreen(
         ButtonsRow(
             onClickOpenImage = { canOpenImagePicker = true },
             onClickSaveImage = {
-                stockDetailViewModel.selectedImage.value?.let {
-                    stockListViewModel.changeImageUri(stockDetailViewModel.index.value, it)
+                stockDetailViewModel.onClickSaveImage {
                     onPopToScreen(null)
                 }
             },
             onClickDeleteImage = {
                 stockDetailViewModel.onClickDeleteImage()
-                stockListViewModel.changeImageUri(stockDetailViewModel.index.value, null)
             },
         )
         StockDataColumn(stock)
@@ -77,9 +78,10 @@ fun ButtonsRow(
     onClickSaveImage: () -> Unit,
     onClickDeleteImage: () -> Unit,
 ) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(dimensionResource(id = R.dimen.common_row_height)),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(dimensionResource(id = R.dimen.common_row_height)),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         CommonImageButton(
@@ -101,8 +103,18 @@ fun ButtonsRow(
 fun StockDataColumn(stock: Stock?) {
     if (stock == null) return
     Column(modifier = Modifier.fillMaxWidth()) {
-        CommonMiddleLabel(text = stringResource(id = R.string.label_create_date, stock.createDate.format(Constants.DATETIME_FORMAT_HHMMSS)))
+        CommonMiddleLabel(
+            text = stringResource(
+                id = R.string.label_create_date,
+                stock.createDate.format(Constants.DATETIME_FORMAT_HHMMSS)
+            )
+        )
         CommonMiddleLabel(text = stringResource(id = R.string.label_amount, stock.amount))
-        CommonMiddleLabel(text = stringResource(id = R.string.label_comment, stock.comment.orEmpty()))
+        CommonMiddleLabel(
+            text = stringResource(
+                id = R.string.label_comment,
+                stock.comment.orEmpty()
+            )
+        )
     }
 }

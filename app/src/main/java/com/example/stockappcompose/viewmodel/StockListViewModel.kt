@@ -1,18 +1,17 @@
 package com.example.stockappcompose.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stockappcompose.Constants
-import com.example.stockappcompose.Stock
 import com.example.stockappcompose.repository.StockRepository
 import com.example.stockappcompose.ui.layout.common.StockListRowData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,21 +35,28 @@ class StockListViewModel @Inject constructor(
             }
         }
     }
-    
+
     fun onChangeAmount(newValue: Int) {
         if (newValue <= Constants.STOCK_AMOUNT_MAX && newValue >= Constants.STOCK_AMOUNT_MIN) {
             _amount.value = newValue
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun onClickSubmit(comment: String) {
-        _list.value = _list.value.toMutableList().also {
-            val newValue = Stock(
+        viewModelScope.launch {
+            stockRepository.insertStock(
                 comment = comment.ifBlank { null },
-                amount = _amount.value,
-                createDate = LocalDateTime.now()
-            )
-            it.add(StockListRowData(isChecked = false, stock = newValue))
+                amount = _amount.value
+            ).flatMapConcat {
+                stockRepository.getOne(it)
+            }.take(1).collect { newValue ->
+                newValue?.let {
+                    _list.value = _list.value.toMutableList().also {
+                        it.add(StockListRowData(isChecked = false, stock = newValue))
+                    }
+                }
+            }
         }
     }
 
@@ -71,16 +77,6 @@ class StockListViewModel @Inject constructor(
     fun onClickClear() {
         _list.value = _list.value.toMutableList().also {
             it.clear()
-        }
-    }
-
-    // TODO: データベース実装時に詳細画面に移設予定
-    fun changeImageUri(index: Int, imageUri: Uri?) {
-        _list.value = _list.value.toMutableList().also { list ->
-            list.getOrNull(index)?.let { row ->
-                val stock = row.stock.copy(imageUri = imageUri?.path)
-                list[index] = row.copy(stock = stock)
-            }
         }
     }
 }
