@@ -119,7 +119,7 @@ private fun StockAppNavHost(
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getInt("id")
             if (id != null) {
-                val viewModel = viewModel<StockDetailViewModel>()
+                val viewModel = viewModel<StockDetailViewModel>(viewModelStoreOwner)
                 viewModel.setId(id)
                 StockDetailScreen(
                     stockDetailViewModel = viewModel,

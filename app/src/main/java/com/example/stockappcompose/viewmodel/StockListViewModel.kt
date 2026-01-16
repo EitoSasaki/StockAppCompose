@@ -69,8 +69,13 @@ class StockListViewModel @Inject constructor(
     }
 
     fun onClickDelete(index: Int) {
-        _list.value = _list.value.toMutableList().also {
-            it.removeAt(index)
+        val stock = _list.value.toMutableList().getOrNull(index)?.stock ?: return
+        viewModelScope.launch {
+            stockRepository.deleteStock(stock).take(1).collect {
+                _list.value = _list.value.toMutableList().also {
+                    it.removeAt(index)
+                }
+            }
         }
     }
 

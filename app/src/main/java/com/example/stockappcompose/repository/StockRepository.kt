@@ -15,4 +15,10 @@ class StockRepository @Inject constructor(
 
     fun insertStock(comment: String?, amount: Int?): Flow<Int> =
         stockLocalDataSource.insertStock(comment, amount)
+
+    fun updateStock(stock: Stock): Flow<Unit> =
+        stockLocalDataSource.updateStock(stock)
+
+    fun deleteStock(stock: Stock): Flow<Unit> =
+        stockLocalDataSource.deleteStock(stock)
 }

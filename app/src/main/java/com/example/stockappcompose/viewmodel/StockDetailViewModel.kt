@@ -7,10 +7,8 @@ import com.example.stockappcompose.data.db.Stock
 import com.example.stockappcompose.orZero
 import com.example.stockappcompose.repository.StockRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,21 +44,16 @@ class StockDetailViewModel @Inject constructor(
     }
 
     fun onClickSaveImage(onUpdateImage: () -> Unit) {
+        val stock = _stock.value ?: return
+        val imageUri = _selectedImage.value?.path
         viewModelScope.launch {
-            updateImage(_selectedImage.value).take(1).collect {
+            stockRepository.updateStock(stock.copy(imageUri = imageUri)).take(1).collect {
                 onUpdateImage()
             }
         }
     }
 
     fun onClickDeleteImage() {
-        viewModelScope.launch {
-            updateImage(null).take(1).collect {
-                _selectedImage.value = null
-            }
-        }
+        _selectedImage.value = null
     }
-
-    // TODO: 画像の更新の実装
-    private fun updateImage(imageUri: Uri?): Flow<Unit> = flowOf(Unit)
 }

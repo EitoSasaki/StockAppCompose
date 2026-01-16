@@ -9,7 +9,6 @@ import com.example.stockappcompose.orZero
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -19,13 +18,15 @@ class StockLocalDataSource @Inject constructor(
     private val stockDao: StockDao
 ) : StockDataSource {
 
-    override fun getStocks(): Flow<List<Stock>> {
-        return flowOf(stockDao.getAll())
-    }
+    override fun getStocks(): Flow<List<Stock>> = flow {
+        val result = stockDao.getAll()
+        emit(result)
+    }.flowOn(Dispatchers.IO)
 
-    override fun getOne(id: Int): Flow<Stock?> {
-        return flowOf(stockDao.getOne(id))
-    }
+    override fun getOne(id: Int): Flow<Stock?> = flow {
+        val result = stockDao.getOne(id)
+        emit(result)
+    }.flowOn(Dispatchers.IO)
 
     override fun insertStock(comment: String?, amount: Int?): Flow<Int> = flow {
         val result = appDatabase.withTransaction {
@@ -38,5 +39,19 @@ class StockLocalDataSource @Inject constructor(
             stockDao.insert(newValue)
         }
         emit(result.toInt()) // IDを返す
+    }.flowOn(Dispatchers.IO)
+
+    override fun updateStock(stock: Stock): Flow<Unit> = flow {
+        val result = appDatabase.withTransaction {
+            stockDao.update(stock)
+        }
+        emit(result)
+    }.flowOn(Dispatchers.IO)
+
+    override fun deleteStock(stock: Stock): Flow<Unit> = flow {
+        val result = appDatabase.withTransaction {
+            stockDao.delete(stock)
+        }
+        emit(result)
     }.flowOn(Dispatchers.IO)
 }
