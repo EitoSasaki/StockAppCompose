@@ -80,6 +80,9 @@ dependencies {
     testImplementation("androidx.room:room-testing:$room_version")
     implementation("androidx.room:room-paging:$room_version")
 
+    // Version2以上が出ているがHiltとの相性が悪いためVersion1時点での最新を利用
+    implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.21")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

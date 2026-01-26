@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.stockappcompose.Constants
 import com.example.stockappcompose.repository.StockRepository
 import com.example.stockappcompose.ui.layout.common.StockListRowData
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +30,13 @@ class StockListViewModel @Inject constructor(
     // 初期表示
     fun initView() {
         viewModelScope.launch {
-            stockRepository.getStocks().take(1).collect { stocks ->
-                _list.value = stocks.map { stock ->
-                    StockListRowData(isChecked = false, stock = stock)
+            stockRepository.getStocks().take(1).collect { result ->
+                result.onSuccess { stocks ->
+                    _list.value = stocks.map { stock ->
+                        StockListRowData(isChecked = false, stock = stock)
+                    }
+                }.onFailure {
+                    print(it.cause)
                 }
             }
         }
