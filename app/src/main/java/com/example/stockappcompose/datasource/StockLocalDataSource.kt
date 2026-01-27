@@ -28,16 +28,18 @@ class StockLocalDataSource @Inject constructor(
     override fun getStocks(): Flow<Result<List<Stock>, BaseError>> = flow {
         val result = stockDao.getAll()
         emit(Ok(result))
-    }.flowOn(Dispatchers.IO).andResult().catch { e ->
-        emit(Err(StockError.StockGetError().from(e)))
+    }.flowOn(Dispatchers.IO).andResult().catch { t ->
+        emit(Err(StockError.StockGetError().from(t)))
     }
 
-    override fun getOne(id: Int): Flow<Stock?> = flow {
+    override fun getOne(id: Int): Flow<Result<Stock?, BaseError>> = flow {
         val result = stockDao.getOne(id)
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+        emit(Ok(result))
+    }.flowOn(Dispatchers.IO).andResult().catch { t ->
+        emit(Err(StockError.StockGetError().from(t)))
+    }
 
-    override fun insertStock(comment: String?, amount: Int?): Flow<Int> = flow {
+    override fun insertStock(comment: String?, amount: Int?): Flow<Result<Int, BaseError>> = flow {
         val result = appDatabase.withTransaction {
             val newValue = Stock(
                 id = 0,
@@ -47,20 +49,35 @@ class StockLocalDataSource @Inject constructor(
             )
             stockDao.insert(newValue)
         }
-        emit(result.toInt()) // IDを返す
-    }.flowOn(Dispatchers.IO)
+        emit(Ok(result.toInt())) // IDを返す
+    }.flowOn(Dispatchers.IO).andResult().catch { t ->
+        emit(Err(StockError.StockGetError().from(t)))
+    }
 
-    override fun updateStock(stock: Stock): Flow<Unit> = flow {
+    override fun updateStock(stock: Stock): Flow<Result<Unit, BaseError>> = flow {
         val result = appDatabase.withTransaction {
             stockDao.update(stock)
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+        emit(Ok(result))
+    }.flowOn(Dispatchers.IO).andResult().catch { t ->
+        emit(Err(StockError.StockGetError().from(t)))
+    }
 
-    override fun deleteStock(stock: Stock): Flow<Unit> = flow {
+    override fun deleteStock(stock: Stock): Flow<Result<Unit, BaseError>> = flow {
         val result = appDatabase.withTransaction {
             stockDao.delete(stock)
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+        emit(Ok(result))
+    }.flowOn(Dispatchers.IO).andResult().catch { t ->
+        emit(Err(StockError.StockGetError().from(t)))
+    }
+
+    override fun deleteAll(): Flow<Result<Unit, BaseError>> = flow {
+        val result = appDatabase.withTransaction {
+            stockDao.deleteAll()
+        }
+        emit(Ok(result))
+    }.flowOn(Dispatchers.IO).andResult().catch { t ->
+        emit(Err(StockError.StockGetError().from(t)))
+    }
 }

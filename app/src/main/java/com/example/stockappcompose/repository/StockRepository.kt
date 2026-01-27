@@ -11,16 +11,18 @@ class StockRepository @Inject constructor(
     private val stockLocalDataSource: StockLocalDataSource
 ) {
 
-    fun getStocks(): Flow<Result<List<Stock>, BaseError>> = stockLocalDataSource.getStocks()
+    fun getStocks() = stockLocalDataSource.getStocks()
 
-    fun getOne(id: Int): Flow<Stock?> = stockLocalDataSource.getOne(id)
+    fun getOne(id: Int) = stockLocalDataSource.getOne(id)
 
-    fun insertStock(comment: String?, amount: Int?): Flow<Int> =
+    fun insertStock(comment: String?, amount: Int?) =
         stockLocalDataSource.insertStock(comment, amount)
 
-    fun updateStock(stock: Stock): Flow<Unit> =
+    fun updateStock(stock: Stock) =
         stockLocalDataSource.updateStock(stock)
 
-    fun deleteStock(stock: Stock): Flow<Unit> =
+    fun deleteStock(stock: Stock) =
         stockLocalDataSource.deleteStock(stock)
+
+    fun deleteAll() = stockLocalDataSource.deleteAll()
 }

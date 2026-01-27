@@ -23,4 +23,7 @@ interface StockDao {
 
     @Delete
     fun delete(stock: Stock)
+
+    @Query("DELETE FROM stock")
+    fun deleteAll()
 }

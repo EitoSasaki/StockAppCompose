@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface StockDataSource {
     fun getStocks(): Flow<Result<List<Stock>, BaseError>>
-    fun getOne(id: Int): Flow<Stock?>
-    fun insertStock(comment: String?, amount: Int?): Flow<Int>
-    fun updateStock(stock: Stock): Flow<Unit>
-    fun deleteStock(stock: Stock): Flow<Unit>
+    fun getOne(id: Int): Flow<Result<Stock?, BaseError>>
+    fun insertStock(comment: String?, amount: Int?): Flow<Result<Int, BaseError>>
+    fun updateStock(stock: Stock): Flow<Result<Unit, BaseError>>
+    fun deleteStock(stock: Stock): Flow<Result<Unit, BaseError>>
+    fun deleteAll(): Flow<Result<Unit, BaseError>>
 }

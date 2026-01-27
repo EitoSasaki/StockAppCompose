@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Entity("stock")
 data class Stock(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
 
     @ColumnInfo(name = "comment")
