@@ -15,11 +15,12 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.core.net.toUri
+import com.example.stockappcompose.viewmodel.base.BaseViewModel
 
 @HiltViewModel
 class StockDetailViewModel @Inject constructor(
     private val stockRepository: StockRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _stock = MutableStateFlow<Stock?>(null)
     private val _selectedImage = MutableStateFlow<Uri?>(null)

@@ -2,24 +2,28 @@ package com.example.stockappcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.stockappcompose.data.ui.MessageType
 import com.example.stockappcompose.domain.Constants
 import com.example.stockappcompose.extension.flatMapSuccess
 import com.example.stockappcompose.repository.StockRepository
 import com.example.stockappcompose.ui.layout.common.StockListRowData
+import com.example.stockappcompose.viewmodel.base.BaseViewModel
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.collections.filter
 
 @HiltViewModel
 class StockListViewModel @Inject constructor(
     private val stockRepository: StockRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _list = MutableStateFlow<List<StockListRowData>>(emptyList())
     private val _amount = MutableStateFlow(0)
@@ -104,6 +108,16 @@ class StockListViewModel @Inject constructor(
                     print(it.cause)
                 }
             }
+        }
+    }
+
+    fun onClickSum() {
+        val sum = _list.value.filter { it.isChecked }.sumOf { it.stock.amount }
+        viewModelScope.launch {
+            showMessage(
+                messageType = MessageType.CheckedSum,
+                formatArgs = listOf(sum),
+            ).first()
         }
     }
 }

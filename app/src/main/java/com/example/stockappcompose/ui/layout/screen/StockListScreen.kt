@@ -27,13 +27,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockappcompose.R
 import com.example.stockappcompose.data.ui.Route
+import com.example.stockappcompose.data.ui.Screen
 import com.example.stockappcompose.ui.layout.common.CommonButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
-import com.example.stockappcompose.ui.layout.common.CommonSingleButtonDialog
 import com.example.stockappcompose.ui.layout.common.CommonTextField
 import com.example.stockappcompose.ui.layout.common.CurrentTimer
 import com.example.stockappcompose.ui.layout.common.StockListRow
 import com.example.stockappcompose.ui.layout.common.StockListRowData
+import com.example.stockappcompose.ui.layout.common.Template
 import com.example.stockappcompose.viewmodel.StockListViewModel
 
 @Composable
@@ -43,31 +44,50 @@ fun StockListScreen(
 ) {
     val list = stockListViewModel.list.collectAsState().value
     val amount = stockListViewModel.amount.collectAsState().value
-    var canShowSumDialog: Boolean by remember { mutableStateOf(false) }
 
     val onClickRow: (Int) -> Unit = { index ->
         list.getOrNull(index)?.let {
             onNavigateToScreen(Route.StockDetail(it.stock.id))
         }
     }
-    val onClickSum: () -> Unit = {
-        canShowSumDialog = true
-    }
-
-    if (canShowSumDialog) {
-        val sum = list.filter { it.isChecked }.sumOf { it.stock.amount }
-        CommonSingleButtonDialog(
-            message = stringResource(id = R.string.message_sum, sum),
-            btnText = R.string.button_ok,
-            onClickButton = { canShowSumDialog = false },
-            onDismiss = { canShowSumDialog = false },
-        )
-    }
 
     LaunchedEffect(Unit) {
         stockListViewModel.initView()
     }
 
+    Template(
+        screen = Screen.StockList,
+        viewModel = stockListViewModel,
+        body = {
+            Body(
+                list = list,
+                amount = amount,
+                onChangeAmount = { stockListViewModel.onChangeAmount(it) },
+                onClickSubmit = { stockListViewModel.onClickSubmit(it) },
+                onClickRow = onClickRow,
+                onChangeChecked = { index, isChecked ->
+                    stockListViewModel.onChangeChecked(index, isChecked)
+                },
+                onClickDelete = { stockListViewModel.onClickDelete(it) },
+                onClickClear = { stockListViewModel.onClickClear() },
+                onClickSum = { stockListViewModel.onClickSum() },
+            )
+        }
+    )
+}
+
+@Composable
+private fun Body(
+    list: List<StockListRowData>,
+    amount: Int,
+    onChangeAmount: (Int) -> Unit,
+    onClickSubmit: (String) -> Unit,
+    onClickRow: (Int) -> Unit,
+    onChangeChecked: (Int, Boolean) -> Unit,
+    onClickDelete: (Int) -> Unit,
+    onClickClear: () -> Unit,
+    onClickSum: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,20 +96,20 @@ fun StockListScreen(
     ) {
         AmountInputRow(
             amount = amount,
-            onChangeAmount = { stockListViewModel.onChangeAmount(it) },
+            onChangeAmount = { onChangeAmount(it) },
         )
         CommentInputRow(
-            onClickSubmit = { stockListViewModel.onClickSubmit(it) },
+            onClickSubmit = { onClickSubmit(it) },
         )
         StockListColumn(
             modifier = Modifier.weight(1F),
             list = list,
             onClickRow = onClickRow,
-            onChangeChecked = { index, isChecked -> stockListViewModel.onChangeChecked(index, isChecked) },
-            onClickDelete = { stockListViewModel.onClickDelete(it) },
+            onChangeChecked = { index, isChecked -> onChangeChecked(index, isChecked) },
+            onClickDelete = { onClickDelete(it) },
         )
         BottomButtonRow(
-            onClickClear = { stockListViewModel.onClickClear() },
+            onClickClear = { onClickClear() },
             onClickSum = onClickSum,
         )
     }
@@ -192,7 +212,7 @@ private fun StockListColumn(
 ) {
     LazyColumn(
         modifier = modifier
-        .fillMaxWidth()
+            .fillMaxWidth()
     ) {
         itemsIndexed(list) { index, rowData ->
             StockListRow(
