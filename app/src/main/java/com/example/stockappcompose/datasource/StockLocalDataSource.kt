@@ -51,7 +51,7 @@ class StockLocalDataSource @Inject constructor(
         }
         emit(Ok(result.toInt())) // IDを返す
     }.flowOn(Dispatchers.IO).andResult().catch { t ->
-        emit(Err(StockError.StockGetError().from(t)))
+        emit(Err(StockError.StockInsertError().from(t)))
     }
 
     override fun updateStock(stock: Stock): Flow<Result<Unit, BaseError>> = flow {
@@ -60,7 +60,7 @@ class StockLocalDataSource @Inject constructor(
         }
         emit(Ok(result))
     }.flowOn(Dispatchers.IO).andResult().catch { t ->
-        emit(Err(StockError.StockGetError().from(t)))
+        emit(Err(StockError.StockUpdateError().from(t)))
     }
 
     override fun deleteStock(stock: Stock): Flow<Result<Unit, BaseError>> = flow {
@@ -69,7 +69,7 @@ class StockLocalDataSource @Inject constructor(
         }
         emit(Ok(result))
     }.flowOn(Dispatchers.IO).andResult().catch { t ->
-        emit(Err(StockError.StockGetError().from(t)))
+        emit(Err(StockError.StockUpdateError().from(t)))
     }
 
     override fun deleteAll(): Flow<Result<Unit, BaseError>> = flow {
@@ -78,6 +78,6 @@ class StockLocalDataSource @Inject constructor(
         }
         emit(Ok(result))
     }.flowOn(Dispatchers.IO).andResult().catch { t ->
-        emit(Err(StockError.StockGetError().from(t)))
+        emit(Err(StockError.StockUpdateError().from(t)))
     }
 }
