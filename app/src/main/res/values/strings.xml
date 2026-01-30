@@ -5,11 +5,16 @@
 
     <!-- MESSAGE -->
     <string name="message_sum">合計%dです。</string>
+    <string name="message_stock_get_error">データ取得時のエラー</string>
+    <string name="message_stock_insert_error">データ追加時のエラー</string>
+    <string name="message_stock_update_error">データ更新時のエラー</string>
+    <string name="message_unknown_error">予期せぬエラー</string>
 
     <!-- LABEL -->
     <string name="label_amount">数量：%,d</string>
     <string name="label_create_date">登録時刻：%s</string>
     <string name="label_comment">コメント：%s</string>
+    <string name="label_error">エラー</string>
     <string name="label_placeholder_comment">コメント</string>
 
     <!-- BUTTON -->

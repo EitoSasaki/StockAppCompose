@@ -26,10 +26,12 @@ import com.example.stockappcompose.R
 import com.example.stockappcompose.data.common.DateFormat
 import com.example.stockappcompose.data.ui.Route
 import com.example.stockappcompose.data.db.Stock
+import com.example.stockappcompose.data.ui.Screen
 import com.example.stockappcompose.extension.format
 import com.example.stockappcompose.ui.layout.common.CommonImageButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.common.ImagePicker
+import com.example.stockappcompose.ui.layout.common.Template
 import com.example.stockappcompose.viewmodel.StockDetailViewModel
 
 @Composable
@@ -51,6 +53,33 @@ fun StockDetailScreen(
         }
     }
 
+    Template(
+        screen = Screen.StockDetail,
+        viewModel = stockDetailViewModel,
+        body = {
+            Body(
+                stock = stock,
+                onClickOpenImage = { canOpenImagePicker = true },
+                onClickSaveImage = {
+                    stockDetailViewModel.onClickSaveImage {
+                        onPopToScreen(null)
+                    }
+                },
+                onClickDeleteImage = {
+                    stockDetailViewModel.onClickDeleteImage()
+                },
+            )
+        }
+    )
+}
+
+@Composable
+private fun Body(
+    stock: Stock?,
+    onClickOpenImage: () -> Unit,
+    onClickSaveImage: () -> Unit,
+    onClickDeleteImage: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,15 +87,9 @@ fun StockDetailScreen(
             .padding(horizontal = dimensionResource(id = R.dimen.common_space))
     ) {
         ButtonsRow(
-            onClickOpenImage = { canOpenImagePicker = true },
-            onClickSaveImage = {
-                stockDetailViewModel.onClickSaveImage {
-                    onPopToScreen(null)
-                }
-            },
-            onClickDeleteImage = {
-                stockDetailViewModel.onClickDeleteImage()
-            },
+            onClickOpenImage = onClickOpenImage,
+            onClickSaveImage = onClickSaveImage,
+            onClickDeleteImage = onClickDeleteImage,
         )
         StockDataColumn(stock)
     }

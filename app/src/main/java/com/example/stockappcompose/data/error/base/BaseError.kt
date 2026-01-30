@@ -1,7 +1,9 @@
 package com.example.stockappcompose.data.error.base
 
-abstract class BaseError constructor(
-    open var message: String? = null,
+import com.example.stockappcompose.data.ui.MessageType
+
+abstract class BaseError(
+    open var messageType: MessageType? = null,
 ) {
     var cause: String? = null
     var exception: Exception? = null

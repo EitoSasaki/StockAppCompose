@@ -1,21 +1,21 @@
 package com.example.stockappcompose.viewmodel
 
 import android.net.Uri
-import androidx.lifecycle.ViewModel
+import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.example.stockappcompose.data.db.Stock
 import com.example.stockappcompose.extension.orZero
 import com.example.stockappcompose.repository.StockRepository
+import com.example.stockappcompose.viewmodel.base.BaseViewModel
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.core.net.toUri
-import com.example.stockappcompose.viewmodel.base.BaseViewModel
 
 @HiltViewModel
 class StockDetailViewModel @Inject constructor(
@@ -42,6 +42,9 @@ class StockDetailViewModel @Inject constructor(
                     _selectedImage.value = stock?.imageUri?.toUri()
                 }.onFailure {
                     print(it.cause)
+                    showMessage(
+                        messageType = it.messageType
+                    ).first()
                 }
             }
         }
@@ -62,6 +65,9 @@ class StockDetailViewModel @Inject constructor(
                     onUpdateImage()
                 }.onFailure {
                     print(it.cause)
+                    showMessage(
+                        messageType = it.messageType
+                    ).first()
                 }
             }
         }

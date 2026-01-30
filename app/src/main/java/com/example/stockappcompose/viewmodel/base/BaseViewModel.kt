@@ -25,10 +25,10 @@ abstract class BaseViewModel : ViewModel() {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun showMessage(
-        messageType: MessageType,
-        formatArgs: List<Any>,
+        messageType: MessageType?,
+        formatArgs: List<Any> = emptyList(),
     ): Flow<Result<DialogActionType, BaseError>> {
-        _messageType.value = messageType
+        _messageType.value = messageType ?: MessageType.UnknownError
         _formatArgs.value = formatArgs
         return waitDialogAction().take(1)
     }

@@ -1,11 +1,10 @@
 package com.example.stockappcompose.data.error
 
 import com.example.stockappcompose.data.error.base.BaseError
+import com.example.stockappcompose.data.ui.MessageType
 
 sealed class ApplicationError(
-    override var message: String? = null,
+    override var messageType: MessageType? = null,
 ) : BaseError() {
-
-    class DatabaseError: ApplicationError(message = "データベースエラー")
-    class UnknownError : ApplicationError(message = "予期せぬエラー")
+    class UnknownError : ApplicationError(messageType = MessageType.UnknownError)
 }

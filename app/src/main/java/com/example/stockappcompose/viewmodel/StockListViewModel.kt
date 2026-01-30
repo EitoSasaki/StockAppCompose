@@ -1,6 +1,5 @@
 package com.example.stockappcompose.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stockappcompose.data.ui.MessageType
 import com.example.stockappcompose.domain.Constants
@@ -41,6 +40,9 @@ class StockListViewModel @Inject constructor(
                     }
                 }.onFailure {
                     print(it.cause)
+                    showMessage(
+                        messageType = it.messageType
+                    ).first()
                 }
             }
         }
@@ -69,6 +71,9 @@ class StockListViewModel @Inject constructor(
                     }
                 }.onFailure {
                     print(it.cause)
+                    showMessage(
+                        messageType = it.messageType
+                    ).first()
                 }
             }
         }
@@ -92,6 +97,9 @@ class StockListViewModel @Inject constructor(
                     }
                 }.onFailure {
                     print(it.cause)
+                    showMessage(
+                        messageType = it.messageType
+                    ).first()
                 }
             }
         }
@@ -106,6 +114,9 @@ class StockListViewModel @Inject constructor(
                     }
                 }.onFailure {
                     print(it.cause)
+                    showMessage(
+                        messageType = it.messageType
+                    ).first()
                 }
             }
         }

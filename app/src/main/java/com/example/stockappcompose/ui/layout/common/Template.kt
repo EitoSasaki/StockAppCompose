@@ -36,6 +36,15 @@ fun Template(
                         onDismiss = {},
                     )
                 }
+                DialogType.Error -> {
+                    SingleButtonErrorDialog(
+                        message = stringResource(id = message.messageId, *formatArgs.toTypedArray()),
+                        code = message.code,
+                        btnText = R.string.button_ok,
+                        onClickButton = { viewModel.setDialogActionType(DialogActionType.Ok) },
+                        onDismiss = {},
+                    )
+                }
                 else -> {
                     // TODO: ダイアログ表示のケースが増えたら追加
                 }
