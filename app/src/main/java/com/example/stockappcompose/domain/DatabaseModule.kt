@@ -1,4 +1,4 @@
-package com.example.stockappcompose
+package com.example.stockappcompose.domain
 
 import android.content.Context
 import androidx.room.Room

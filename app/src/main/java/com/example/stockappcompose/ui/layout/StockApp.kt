@@ -1,4 +1,4 @@
-package com.example.stockappcompose
+package com.example.stockappcompose.ui.layout
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -21,6 +21,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.stockappcompose.data.ui.Route
+import com.example.stockappcompose.data.ui.Screen
 import com.example.stockappcompose.ui.layout.common.CommonImageButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.screen.StockDetailScreen

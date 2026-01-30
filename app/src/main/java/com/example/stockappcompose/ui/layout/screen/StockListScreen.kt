@@ -26,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockappcompose.R
-import com.example.stockappcompose.Route
+import com.example.stockappcompose.data.ui.Route
 import com.example.stockappcompose.ui.layout.common.CommonButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.common.CommonSingleButtonDialog

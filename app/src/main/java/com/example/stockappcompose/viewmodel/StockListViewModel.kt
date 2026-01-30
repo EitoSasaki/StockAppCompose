@@ -2,8 +2,8 @@ package com.example.stockappcompose.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.stockappcompose.Constants
-import com.example.stockappcompose.flatMapSuccess
+import com.example.stockappcompose.domain.Constants
+import com.example.stockappcompose.extension.flatMapSuccess
 import com.example.stockappcompose.repository.StockRepository
 import com.example.stockappcompose.ui.layout.common.StockListRowData
 import com.github.michaelbull.result.onFailure

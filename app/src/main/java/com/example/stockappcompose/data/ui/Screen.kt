@@ -1,4 +1,4 @@
-package com.example.stockappcompose
+package com.example.stockappcompose.data.ui
 
 enum class Screen(val screenName: String, val routePrefix: String) {
     StockList("一覧画面", "StockList"),

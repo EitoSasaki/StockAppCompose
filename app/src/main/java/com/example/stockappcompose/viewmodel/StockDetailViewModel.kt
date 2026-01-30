@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stockappcompose.data.db.Stock
-import com.example.stockappcompose.orZero
+import com.example.stockappcompose.extension.orZero
 import com.example.stockappcompose.repository.StockRepository
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess

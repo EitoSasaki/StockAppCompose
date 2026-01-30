@@ -1,4 +1,4 @@
-package com.example.stockappcompose
+package com.example.stockappcompose.data.ui
 
 sealed class Route(
     val screen: Screen,

@@ -22,11 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.stockappcompose.Constants
 import com.example.stockappcompose.R
-import com.example.stockappcompose.Route
+import com.example.stockappcompose.data.common.DateFormat
+import com.example.stockappcompose.data.ui.Route
 import com.example.stockappcompose.data.db.Stock
-import com.example.stockappcompose.format
+import com.example.stockappcompose.extension.format
 import com.example.stockappcompose.ui.layout.common.CommonImageButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
 import com.example.stockappcompose.ui.layout.common.ImagePicker
@@ -106,7 +106,7 @@ fun StockDataColumn(stock: Stock?) {
         CommonMiddleLabel(
             text = stringResource(
                 id = R.string.label_create_date,
-                stock.createDate.format(Constants.DATETIME_FORMAT_HHMMSS)
+                stock.createDate.format(DateFormat.HHmmss.format)
             )
         )
         CommonMiddleLabel(text = stringResource(id = R.string.label_amount, stock.amount))

@@ -1,4 +1,4 @@
-package com.example.stockappcompose
+package com.example.stockappcompose.extension
 
 import com.example.stockappcompose.data.error.base.BaseError
 import com.github.michaelbull.result.Ok

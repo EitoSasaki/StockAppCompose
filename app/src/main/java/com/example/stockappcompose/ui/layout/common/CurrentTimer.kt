@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.example.stockappcompose.Constants
-import com.example.stockappcompose.format
+import com.example.stockappcompose.data.common.DateFormat
+import com.example.stockappcompose.extension.format
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 
@@ -49,6 +49,6 @@ fun CurrentTimer(
 
     CommonMiddleLabel(
         modifier = modifier,
-        text = currentTime.format(Constants.DATETIME_FORMAT_HHMMSS),
+        text = currentTime.format(DateFormat.HHmmss.format),
     )
 }

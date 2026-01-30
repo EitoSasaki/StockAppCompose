@@ -1,14 +1,14 @@
 package com.example.stockappcompose.datasource
 
 import androidx.room.withTransaction
-import com.example.stockappcompose.AppDatabase
-import com.example.stockappcompose.andResult
+import com.example.stockappcompose.domain.AppDatabase
+import com.example.stockappcompose.extension.andResult
 import com.example.stockappcompose.data.db.Stock
 import com.example.stockappcompose.data.db.dao.StockDao
 import com.example.stockappcompose.data.error.StockError
 import com.example.stockappcompose.data.error.base.BaseError
 import com.example.stockappcompose.datasource.`interface`.StockDataSource
-import com.example.stockappcompose.orZero
+import com.example.stockappcompose.extension.orZero
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result

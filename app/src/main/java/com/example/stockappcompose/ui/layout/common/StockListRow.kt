@@ -16,10 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.stockappcompose.Constants
+import com.example.stockappcompose.domain.Constants
 import com.example.stockappcompose.R
+import com.example.stockappcompose.data.common.DateFormat
 import com.example.stockappcompose.data.db.Stock
-import com.example.stockappcompose.format
+import com.example.stockappcompose.extension.format
 import java.time.LocalDateTime
 
 data class StockListRowData(
@@ -52,7 +53,7 @@ fun StockListRow(
         Checkbox(checked = data.isChecked, onCheckedChange = onCheckedChange)
         CommonSmallLabel(
             modifier = Modifier.weight(2F),
-            text = data.stock.createDate.format(Constants.DATETIME_FORMAT_HHMMSS)
+            text = data.stock.createDate.format(DateFormat.HHmmss.format)
         )
         CommonSmallLabel(
             modifier = Modifier.weight(1F),
