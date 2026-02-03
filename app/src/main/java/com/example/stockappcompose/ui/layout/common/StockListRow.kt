@@ -16,9 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.stockappcompose.domain.Constants
 import com.example.stockappcompose.R
-import com.example.stockappcompose.data.common.DateFormat
+import com.example.stockappcompose.enumeration.common.DateFormat
 import com.example.stockappcompose.data.db.Stock
 import com.example.stockappcompose.extension.format
 import java.time.LocalDateTime

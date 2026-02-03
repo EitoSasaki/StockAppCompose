@@ -1,4 +1,4 @@
-package com.example.stockappcompose.data.ui
+package com.example.stockappcompose.enumeration.ui
 
 import androidx.annotation.StringRes
 import com.example.stockappcompose.R

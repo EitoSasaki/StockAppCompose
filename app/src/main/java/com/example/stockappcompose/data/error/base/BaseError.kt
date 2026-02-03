@@ -1,6 +1,6 @@
 package com.example.stockappcompose.data.error.base
 
-import com.example.stockappcompose.data.ui.MessageType
+import com.example.stockappcompose.enumeration.ui.MessageType
 
 abstract class BaseError(
     open var messageType: MessageType? = null,

@@ -1,7 +1,7 @@
 package com.example.stockappcompose.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.example.stockappcompose.data.ui.MessageType
+import com.example.stockappcompose.enumeration.ui.MessageType
 import com.example.stockappcompose.domain.Constants
 import com.example.stockappcompose.extension.flatMapSuccess
 import com.example.stockappcompose.repository.StockRepository

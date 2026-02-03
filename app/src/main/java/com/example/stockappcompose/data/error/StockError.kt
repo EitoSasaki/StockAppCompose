@@ -1,8 +1,7 @@
 package com.example.stockappcompose.data.error
 
-import android.os.Message
 import com.example.stockappcompose.data.error.base.BaseError
-import com.example.stockappcompose.data.ui.MessageType
+import com.example.stockappcompose.enumeration.ui.MessageType
 
 sealed class StockError(
     override var messageType: MessageType? = null,

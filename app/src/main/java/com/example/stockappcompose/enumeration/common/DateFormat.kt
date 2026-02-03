@@ -1,4 +1,4 @@
-package com.example.stockappcompose.data.common
+package com.example.stockappcompose.enumeration.common
 
 enum class DateFormat(val format: String) {
     yyyyMMddHHmmssSSS("yyyyMMddHHmmssSSS"),

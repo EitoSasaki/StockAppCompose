@@ -1,7 +1,7 @@
 package com.example.stockappcompose.data.error
 
 import com.example.stockappcompose.data.error.base.BaseError
-import com.example.stockappcompose.data.ui.MessageType
+import com.example.stockappcompose.enumeration.ui.MessageType
 
 sealed class ApplicationError(
     override var messageType: MessageType? = null,

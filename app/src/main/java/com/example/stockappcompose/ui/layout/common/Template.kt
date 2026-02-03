@@ -8,9 +8,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.stockappcompose.R
-import com.example.stockappcompose.data.ui.DialogActionType
-import com.example.stockappcompose.data.ui.DialogType
-import com.example.stockappcompose.data.ui.Screen
+import com.example.stockappcompose.enumeration.ui.DialogActionType
+import com.example.stockappcompose.enumeration.ui.DialogType
+import com.example.stockappcompose.enumeration.ui.Screen
 import com.example.stockappcompose.viewmodel.base.BaseViewModel
 
 @Composable

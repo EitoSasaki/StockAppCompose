@@ -1,4 +1,4 @@
-package com.example.stockappcompose.data.ui
+package com.example.stockappcompose.enumeration.ui
 
 enum class DialogActionType {
     None,

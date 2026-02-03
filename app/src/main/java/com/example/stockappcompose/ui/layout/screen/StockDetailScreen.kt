@@ -23,10 +23,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockappcompose.R
-import com.example.stockappcompose.data.common.DateFormat
+import com.example.stockappcompose.enumeration.common.DateFormat
 import com.example.stockappcompose.data.ui.Route
 import com.example.stockappcompose.data.db.Stock
-import com.example.stockappcompose.data.ui.Screen
+import com.example.stockappcompose.enumeration.ui.Screen
 import com.example.stockappcompose.extension.format
 import com.example.stockappcompose.ui.layout.common.CommonImageButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel

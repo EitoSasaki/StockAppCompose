@@ -1,7 +1,7 @@
 package com.example.stockappcompose.data.db.common
 
 import androidx.room.TypeConverter
-import com.example.stockappcompose.data.common.DateFormat
+import com.example.stockappcompose.enumeration.common.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId

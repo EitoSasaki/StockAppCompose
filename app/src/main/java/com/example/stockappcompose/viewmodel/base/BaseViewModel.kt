@@ -2,8 +2,8 @@ package com.example.stockappcompose.viewmodel.base
 
 import androidx.lifecycle.ViewModel
 import com.example.stockappcompose.data.error.base.BaseError
-import com.example.stockappcompose.data.ui.DialogActionType
-import com.example.stockappcompose.data.ui.MessageType
+import com.example.stockappcompose.enumeration.ui.DialogActionType
+import com.example.stockappcompose.enumeration.ui.MessageType
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
