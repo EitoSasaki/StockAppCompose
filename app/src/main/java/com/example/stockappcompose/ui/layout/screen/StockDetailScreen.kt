@@ -1,5 +1,6 @@
 package com.example.stockappcompose.ui.layout.screen
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,23 +15,18 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.stockappcompose.R
-import com.example.stockappcompose.enumeration.common.DateFormat
-import com.example.stockappcompose.data.ui.Route
 import com.example.stockappcompose.data.db.Stock
+import com.example.stockappcompose.data.ui.Route
+import com.example.stockappcompose.enumeration.common.DateFormat
 import com.example.stockappcompose.enumeration.ui.Screen
 import com.example.stockappcompose.extension.format
 import com.example.stockappcompose.ui.layout.common.CommonImageButton
 import com.example.stockappcompose.ui.layout.common.CommonMiddleLabel
-import com.example.stockappcompose.ui.layout.common.ImagePicker
 import com.example.stockappcompose.ui.layout.common.Template
 import com.example.stockappcompose.viewmodel.StockDetailViewModel
 
@@ -40,17 +36,10 @@ fun StockDetailScreen(
     onPopToScreen: (Route?) -> Unit,
 ) {
     val stock = stockDetailViewModel.stock.collectAsState().value
-    var canOpenImagePicker: Boolean by remember { mutableStateOf(false) }
+    val selectedImage = stockDetailViewModel.selectedImage.collectAsState().value
 
     LaunchedEffect(Unit) {
         stockDetailViewModel.initView()
-    }
-
-    if (canOpenImagePicker) {
-        ImagePicker { uri ->
-            canOpenImagePicker = false
-            stockDetailViewModel.onSelectImage(uri)
-        }
     }
 
     Template(
@@ -59,7 +48,8 @@ fun StockDetailScreen(
         body = {
             Body(
                 stock = stock,
-                onClickOpenImage = { canOpenImagePicker = true },
+                selectedImage = selectedImage,
+                onClickOpenImage = { stockDetailViewModel.onClickOpenImage() },
                 onClickSaveImage = {
                     stockDetailViewModel.onClickSaveImage {
                         onPopToScreen(null)
@@ -76,6 +66,7 @@ fun StockDetailScreen(
 @Composable
 private fun Body(
     stock: Stock?,
+    selectedImage: Uri?,
     onClickOpenImage: () -> Unit,
     onClickSaveImage: () -> Unit,
     onClickDeleteImage: () -> Unit,
@@ -91,12 +82,12 @@ private fun Body(
             onClickSaveImage = onClickSaveImage,
             onClickDeleteImage = onClickDeleteImage,
         )
-        StockDataColumn(stock)
+        StockDataColumn(stock, selectedImage)
     }
 }
 
 @Composable
-fun ButtonsRow(
+private fun ButtonsRow(
     onClickOpenImage: () -> Unit,
     onClickSaveImage: () -> Unit,
     onClickDeleteImage: () -> Unit,
@@ -123,7 +114,7 @@ fun ButtonsRow(
 }
 
 @Composable
-fun StockDataColumn(stock: Stock?) {
+private fun StockDataColumn(stock: Stock?, selectedImage: Uri?) {
     if (stock == null) return
     Column(modifier = Modifier.fillMaxWidth()) {
         CommonMiddleLabel(
